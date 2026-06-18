@@ -1,12 +1,4 @@
-import http.server
-import socketserver
-import webbrowser
-
-# Configurações do Servidor
-PORTA = 8080
-
-# Todo o conteúdo do site (HTML/CSS) com fundo Rosa Bebê e container Verde Oliva
-CONTEUDO_HTML = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -211,30 +203,3 @@ CONTEUDO_HTML = """<!DOCTYPE html>
 
 </body>
 </html>
-"""
-
-# Classe personalizada para entregar o HTML diretamente da memória do Python
-class TratadorPortfolio(http.server.SimpleHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header("Content-type", "text/html; charset=utf-8")
-        self.end_headers()
-        self.wfile.write(CONTEUDO_HTML.encode('utf-8'))
-
-# Inicialização e execução do servidor local
-if __name__ == "__main__":
-    Handler = TratadorPortfolio
-    
-    with socketserver.TCPServer(("", PORTA), Handler) as httpd:
-        print(f" Servidor ativo na porta {PORTA}!")
-        print(f"Acesse: http://localhost:{PORTA}")
-        
-        # Abre automaticamente a página no navegador padrão do usuário
-        webbrowser.open(f"http://localhost:{PORTA}")
-        
-        try:
-            httpd.serve_forever()
-        except KeyboardInterrupt:
-            print("\n Servidor encerrado com sucesso.")
-            httpd.server_close()
-
