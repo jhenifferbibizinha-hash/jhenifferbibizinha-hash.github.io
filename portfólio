@@ -1,0 +1,240 @@
+import http.server
+import socketserver
+import webbrowser
+
+# Configurações do Servidor
+PORTA = 8080
+
+# Todo o conteúdo do site (HTML/CSS) com fundo Rosa Bebê e container Verde Oliva
+CONTEUDO_HTML = """<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Portfólio Profissional</title>
+    <!-- Ícones do Font Awesome -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        /* --- ESTILOS GERAIS & MOBILE-FIRST --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #ffe6f0; /* Fundo Rosa Bebê Delicado */
+            color: #2c3b16; /* Texto escuro oliva para contraste */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .portfolio-container {
+            background-color: #3b4d20; /* Cartão Central em Verde Oliva Escuro */
+            width: 100%;
+            max-width: 450px;
+            border-radius: 24px;
+            padding: 35px 24px;
+            text-align: center;
+            box-shadow: 0 12px 32px rgba(44, 59, 22, 0.15);
+            border: 1px solid rgba(255, 230, 240, 0.1);
+        }
+
+        /* Foto de Perfil */
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffdbed; /* Borda Rosa Bebê */
+            margin-bottom: 18px;
+        }
+
+        /* Tipografia */
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 6px;
+            color: #ffffff; /* Texto branco no container escuro */
+            font-weight: 600;
+        }
+
+        .profession {
+            font-size: 0.95rem;
+            color: #ffdbed; /* Subtítulo Rosa Bebê */
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 1rem;
+            margin-bottom: 16px;
+            color: #c2caa7; /* Títulos das seções em Oliva Claro */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        /* Lista de Tecnologias */
+        .stack-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            list-style: none;
+        }
+
+        .stack-item {
+            background-color: #4a5f29; /* Itens em Oliva Médio */
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #f4f6f0;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 219, 221, 0.15);
+        }
+
+        .stack-item:hover {
+            transform: translateY(-3px);
+            background-color: #ffdbed; /* Inverte para Rosa no Hover */
+            color: #3b4d20;
+            border-color: #ffdbed;
+        }
+
+        /* Redes Sociais */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .social-icon {
+            color: #c2caa7;
+            font-size: 1.8rem;
+            transition: all 0.2s ease;
+        }
+
+        .social-icon:hover {
+            color: #ffdbed;
+            transform: scale(1.15);
+        }
+
+        /* Chamada para Ação (CTA) */
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: #ffdbed; /* Botão em Rosa Bebê */
+            color: #2c3b16; /* Texto em Oliva Escuro para leitura perfeita */
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            width: 100%;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #ffbfe2;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 219, 221, 0.25);
+        }
+
+        /* --- DESKTOP ADAPTAÇÃO --- */
+        @media (min-width: 768px) {
+            .portfolio-container {
+                max-width: 500px;
+                padding: 45px 35px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .cta-button {
+                width: auto;
+                padding: 16px 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="portfolio-container">
+        <!-- Foto de Perfil -->
+        
+
+        <!-- Identificação -->
+        <h1>Jheniffer G. S. Martins</h1>
+        <p class="profession">Desenvolvedor Python / Front-end</p>
+
+        <!-- Seção Stack -->
+        <section class="section">
+            <h2>Tecnologias</h2>
+            <ul class="stack-list">
+                <li class="stack-item"><i class="fab fa-python"></i> Python</li>
+                <li class="stack-item"><i class="fab fa-html5"></i> HTML5</li>
+                <li class="stack-item"><i class="fab fa-css3-alt"></i> CSS3</li>
+                <li class="stack-item"><i class="fab fa-js"></i> JavaScript</li>
+                <li class="stack-item"><i class="fab fa-git-alt"></i> Git</li>
+            </ul>
+        </section>
+
+        <!-- Seção Redes Sociais -->
+        <section class="section">
+            <h2>Conecte-se comigo</h2>
+            <div class="social-links">
+                <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-icon" title="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com" target="_blank" rel="noopener" class="social-icon" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- Botão de Contato Obrigatório -->
+        <a href="https://wa.me//5519989375783" target="_blank" rel="noopener" class="cta-button">
+            <i class="fab fa-whatsapp"></i> Vamos conversar?
+        </a>
+    </main>
+
+</body>
+</html>
+"""
+
+# Classe personalizada para entregar o HTML diretamente da memória do Python
+class TratadorPortfolio(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header("Content-type", "text/html; charset=utf-8")
+        self.end_headers()
+        self.wfile.write(CONTEUDO_HTML.encode('utf-8'))
+
+# Inicialização e execução do servidor local
+if __name__ == "__main__":
+    Handler = TratadorPortfolio
+    
+    with socketserver.TCPServer(("", PORTA), Handler) as httpd:
+        print(f" Servidor ativo na porta {PORTA}!")
+        print(f"Acesse: http://localhost:{PORTA}")
+        
+        # Abre automaticamente a página no navegador padrão do usuário
+        webbrowser.open(f"http://localhost:{PORTA}")
+        
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            print("\n Servidor encerrado com sucesso.")
+            httpd.server_close()
+
